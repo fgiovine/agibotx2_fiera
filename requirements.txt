@@ -1,0 +1,42 @@
+# Agibot X2 Demo Fiera - Dipendenze Python
+# Installare con: pip install -r requirements.txt
+
+# Computer Vision / ML
+ultralytics>=8.0.0          # YOLOv8 per detection cialde
+opencv-python>=4.8.0        # Elaborazione immagini, Hough circles
+
+# 3D / Point Cloud
+open3d>=0.17.0              # RANSAC plane segmentation, point cloud
+
+# Robotics
+pinocchio>=3.0.0            # IK solver 7-DOF (pip install pin)
+ruckig>=0.9.0               # Traiettorie smooth con limiti jerk
+
+# Voce / Speech
+openai-whisper>=20230918    # Speech-to-Text locale (Whisper)
+sounddevice>=0.4.6          # Acquisizione audio da microfono
+
+# ChatGPT + TTS
+openai>=1.0.0               # API OpenAI per conversazione + TTS voce italiana
+
+# TTS fallback
+gTTS>=2.3.0                 # Google Text-to-Speech (richiede internet)
+pyttsx3>=2.90               # TTS offline (usa voci di sistema)
+
+# Audio playback
+pygame>=2.5.0               # Riproduzione audio (per OpenAI TTS e gTTS)
+soundfile>=0.12.0           # Lettura file audio (fallback a pygame)
+
+# Scientifiche
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Configurazione
+pyyaml>=6.0
+
+# ROS2 (installati dal workspace, non da pip)
+# rclpy
+# sensor_msgs
+# geometry_msgs
+# cv_bridge
+# builtin_interfaces
