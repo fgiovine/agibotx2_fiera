@@ -227,6 +227,17 @@ class VoiceInteraction:
                 self._in_conversation = False
                 return "IDLE"
 
+            # Controlla se vuole un saluto per la fiera
+            if self._wants_saluto_fiera(user_text):
+                self._emoji.set_emoji(EmojiCode.EXTRA_HAPPY)
+                self._tts.speak(
+                    "Ciao! Sono Ciruzzo, se mi volete conoscere "
+                    "venite alla fiera MECSPE!",
+                    blocking=True,
+                )
+                turns += 1
+                continue
+
             # Rispondi con ChatGPT
             self._emoji.set_emoji(EmojiCode.HAPPY)
             self._led.green_steady()
@@ -260,6 +271,17 @@ class VoiceInteraction:
         ]
         text_lower = text.lower()
         return any(w in text_lower for w in pacco_words)
+
+    def _wants_saluto_fiera(self, text: str) -> bool:
+        """Controlla se l'utente vuole un saluto per la fiera/amici."""
+        saluto_words = [
+            'saluta gli amici', 'saluto per la fiera', 'manda un saluto',
+            'fai un saluto', 'saluta tutti', 'saluta il pubblico',
+            'saluta la fiera', 'saluta per la fiera', 'un saluto',
+            'salutali', 'saluta amici',
+        ]
+        text_lower = text.lower()
+        return any(w in text_lower for w in saluto_words)
 
     @property
     def in_conversation(self) -> bool:

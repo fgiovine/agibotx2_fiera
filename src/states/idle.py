@@ -1,8 +1,7 @@
-"""Stato IDLE: attesa cialde sul tavolo + ascolto wake word "Ciruzzo".
+"""Stato IDLE: ascolto wake word "Ciruzzo".
 
-Il robot e fermo al tavolo cialde, monitora per nuove cialde.
-Contemporaneamente ascolta se qualcuno lo chiama "Ciruzzo".
-- Se rileva cialde -> DETECT_PODS o NAV_TO_POD_TABLE
+Per ora il robot fa SOLO conversazione (test fiera).
+La parte pick & place (cialde) e commentata.
 - Se sente "Ciruzzo" -> WAKE_WORD_DETECTED (chiede pacco o parlare)
 """
 
@@ -40,7 +39,7 @@ class IdleState(BaseState):
             pass
 
     def execute(self) -> StateResult:
-        """Controlla cialde e ascolta per 'Ciruzzo'."""
+        """Ascolta per 'Ciruzzo' (solo conversazione per ora)."""
 
         # --- Controlla wake word "Ciruzzo" ---
         self._wake_word_counter += 1
@@ -50,32 +49,32 @@ class IdleState(BaseState):
                 self._logger.info("Qualcuno ha chiamato Ciruzzo!")
                 return StateResult(next_state="WAKE_WORD_DETECTED")
 
-        # --- Rileva cialde ---
-        rgb = self.camera.get_rgb()
-        if rgb is None:
-            time.sleep(self.POLL_INTERVAL_S)
-            return StateResult(next_state=self.NAME)
+        # --- Rileva cialde (COMMENTATO: solo conversazione per test fiera) ---
+        # rgb = self.camera.get_rgb()
+        # if rgb is None:
+        #     time.sleep(self.POLL_INTERVAL_S)
+        #     return StateResult(next_state=self.NAME)
+        #
+        # detections = self.pod_detector.detect(rgb)
+        #
+        # if detections:
+        #     self._logger.info(f"Rilevate {len(detections)} cialde!")
+        #
+        #     # Verifica se siamo abbastanza vicini al tavolo
+        #     pod_table = self.table_detector.get_table("pod_table")
+        #     if pod_table is not None:
+        #         from src.utils.transforms import distance_2d
+        #         dist = distance_2d(
+        #             self.position_tracker.position, pod_table.center
+        #         )
+        #         approach_dist = self.config.get('tables.approach_distance_m', 0.45)
+        #
+        #         if dist > approach_dist + 0.1:
+        #             return StateResult(next_state="NAV_TO_POD_TABLE")
+        #
+        #     return StateResult(next_state="DETECT_PODS")
 
-        detections = self.pod_detector.detect(rgb)
-
-        if detections:
-            self._logger.info(f"Rilevate {len(detections)} cialde!")
-
-            # Verifica se siamo abbastanza vicini al tavolo
-            pod_table = self.table_detector.get_table("pod_table")
-            if pod_table is not None:
-                from src.utils.transforms import distance_2d
-                dist = distance_2d(
-                    self.position_tracker.position, pod_table.center
-                )
-                approach_dist = self.config.get('tables.approach_distance_m', 0.45)
-
-                if dist > approach_dist + 0.1:
-                    return StateResult(next_state="NAV_TO_POD_TABLE")
-
-            return StateResult(next_state="DETECT_PODS")
-
-        # Nessuna cialda, continua ad aspettare
+        # Nessuna azione cialde, solo attesa wake word
         time.sleep(self.POLL_INTERVAL_S)
         return StateResult(next_state=self.NAME)
 

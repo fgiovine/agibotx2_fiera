@@ -30,6 +30,7 @@ Regole:
 - Se non capisci, chiedi di ripetere con simpatia
 - Puoi usare espressioni napoletane leggere tipo "uè", "jamm ja", "bell stu caffe"
 - Ricorda: sei un robot, ma hai cuore napoletano!
+- Se ti chiedono di salutare gli amici, di fare un saluto per la fiera, di mandare un saluto, o qualsiasi richiesta di saluto pubblico, rispondi ESATTAMENTE: "Ciao! Sono Ciruzzo, se mi volete conoscere venite alla fiera MECSPE!"
 """
 
 
@@ -146,6 +147,12 @@ class ChatClient:
     def _fallback_response(self, user_message: str) -> str:
         """Risposte di fallback quando ChatGPT non e disponibile."""
         msg_lower = user_message.lower()
+
+        if any(w in msg_lower for w in ['saluta gli amici', 'saluto per la fiera',
+               'manda un saluto', 'fai un saluto', 'saluta tutti',
+               'saluta il pubblico', 'saluta la fiera']):
+            return ("Ciao! Sono Ciruzzo, se mi volete conoscere "
+                    "venite alla fiera MECSPE!")
 
         if any(w in msg_lower for w in ['ciao', 'salve', 'buongiorno']):
             return "Uè, ciao! Io sono Ciruzzo, piacere! Che posso fare per te?"
